@@ -75,7 +75,7 @@ async fn main() -> Result<(), Error> {
         if let Some(ref topic) = topic {
             topic.publish(&event).await?;
         }
-        println!("delay {:?} published", event);
+        println!("{:?}", event);
 
         if ms_elapsed < options.sleep_ms {
             let duration_to_wait = std::time::Duration::from_millis(options.sleep_ms - ms_elapsed);
