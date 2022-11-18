@@ -27,8 +27,10 @@ async fn main() -> Result<(), Error> {
     } else {
         None
     };
+    println!("Openinig connection to primary...");
     let (pri_client, pri_connection) =
         tokio_postgres::connect(&options.primary_connection_string, NoTls).await?;
+    println!("Openinig connection to secondary...");
     let (sec_client, sec_connection) =
         tokio_postgres::connect(&options.secondary_connection_string, NoTls).await?;
 
