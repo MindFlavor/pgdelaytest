@@ -1,3 +1,4 @@
+use google_cloud_googleapis::pubsub::v1::PubsubMessage;
 use std::time::SystemTime;
 
 #[derive(Debug, Copy, Clone, serde::Serialize)]
@@ -16,6 +17,15 @@ impl From<u64> for Event {
                 .unwrap()
                 .as_millis(),
             latency_ms: value,
+        }
+    }
+}
+
+impl From<Event> for PubsubMessage {
+    fn from(value: Event) -> Self {
+        PubsubMessage {
+            data: serde_json::to_string(&value).unwrap().as_bytes().to_vec(),
+            ..Default::default()
         }
     }
 }

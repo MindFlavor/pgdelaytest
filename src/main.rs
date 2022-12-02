@@ -3,8 +3,8 @@ mod options;
 
 use anyhow::{Context, Error};
 use clap::Parser;
-use cloud_pubsub::Client as PubSubClient;
 use event::Event;
+use google_cloud_pubsub::client::Client as PubSubClient;
 use options::{Commands, Options};
 use tokio_postgres::*;
 
@@ -15,14 +15,9 @@ async fn main() -> Result<(), Error> {
     let options = Options::parse();
     // println!("Using options {:?}", options);
 
-    let topic = if let Some(Commands::Publish {
-        pub_sub_topic,
-        service_account_key_path,
-    }) = options.command
-    {
-        let pubsub = PubSubClient::new(service_account_key_path).await?;
-        println!("pubsub.project == {:?}", pubsub.project());
-        let topic = pubsub.topic(pub_sub_topic.clone());
+    let topic = if let Some(Commands::Publish { pub_sub_topic }) = options.command {
+        let pubsub = PubSubClient::default().await?;
+        let topic = pubsub.topic(&pub_sub_topic).new_publisher(None);
         Some(topic)
     } else {
         None
@@ -73,7 +68,9 @@ async fn main() -> Result<(), Error> {
         };
         let event: Event = ms_elapsed.into();
         if let Some(ref topic) = topic {
-            topic.publish(&event).await?;
+            topic
+                .publish_immediately(vec![event.into()], None, None)
+                .await?;
         }
         println!("{:?}", event);
 
