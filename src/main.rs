@@ -68,7 +68,9 @@ async fn main() -> Result<(), Error> {
         };
         let event: Event = ms_elapsed.into();
         if let Some(ref topic) = topic {
-            topic.publish(event.into()).await;
+            topic
+                .publish_immediately(vec![event.into()], None, None)
+                .await?;
         }
         println!("{:?}", event);
 
