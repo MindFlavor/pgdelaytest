@@ -7,10 +7,6 @@ pub enum Commands {
         /// Pub/sub topic to publish to
         #[arg(long)]
         pub_sub_topic: String,
-
-        /// Service account key path
-        #[arg(long)]
-        service_account_key_path: String,
     },
 }
 
