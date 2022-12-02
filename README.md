@@ -27,6 +27,17 @@ Tests the latency between `primary` and `secondary`, publishing the results both
 
 Note that, in order to publish to pub/sub, a valid GCP identity must be available and proper permissions must be granted.
 
+## Methodology
+
+The tool updates a row on the primary and right away tries to get the same row from the secondary. If the value matches, the reported latency is zero. If not, the tool keeps querying the same row until the value matches and then reports the time taken as *replication latency*. 
+
+This means two things:
+
+1. Zero latency does not mean zero microseconds: it means the latency is so low that the tool is unable to determine it.
+2. The latency measured, if bigger than zero, incorporates an error the depends on how fast the tool can query the secondary instance. It might be interpreted as an upper bound.
+
+The tool is able to calculate milliseconds (or even microseconds) but given the constraints above I think it's best to give rough estimates in seconds. If you don't agree, please open an issue and I'll add the option.
+
 ## Pub/sub
 
 The tool optionally publishes the event message to a pub/sub topic in GCP. This can be used to have the automatic BigQuery subscription stream data to BigQuery. You can find the schema of the message in the [schema.proto](extra/schema.proto) file. The BigQuery table definition is in the [create_table.sql](extra/create_table.sql) file.

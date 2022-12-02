@@ -622,9 +622,9 @@ dependencies = [
 
 [[package]]
 name = "google-cloud-auth"
-version = "0.5.1"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "88aade8f043512657555f6018fb291c000e7d13cf3cd4ed39d0c1a69012a8d44"
+checksum = "83ba174b84baef81e997a95718b0b9e8be5f5ea99b90dc829d648e9b08e8139d"
 dependencies = [
  "async-trait",
  "base64",
@@ -643,9 +643,9 @@ dependencies = [
 
 [[package]]
 name = "google-cloud-gax"
-version = "0.9.1"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f6e566d955621423a5acc46405164af0387341dac07dce743cf19c6f8d33068"
+checksum = "ec72d6ee40de5f5f0d537744644446d3d41e0b06f9c9bfe223e1eaa45a719b48"
 dependencies = [
  "google-cloud-auth",
  "http",
@@ -683,9 +683,9 @@ dependencies = [
 
 [[package]]
 name = "google-cloud-pubsub"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29bbec75fc832997b32bf2df51e2f96fa2f9a18c0c7fd24800bbe346b160c0c2"
+checksum = "81d0d94ac495512c12a426fda1996c8f8c7a0d89c38b14632fd2052f8583b499"
 dependencies = [
  "async-channel",
  "async-stream",
