@@ -5,7 +5,7 @@ use anyhow::{Context, Error};
 use clap::Parser;
 use event::Event;
 use google_cloud_pubsub::client::Client as PubSubClient;
-use options::{Commands, Options};
+use options::Options;
 use tokio_postgres::*;
 
 const ID: i32 = 1;
@@ -15,13 +15,19 @@ async fn main() -> Result<(), Error> {
     let options = Options::parse();
     // println!("Using options {:?}", options);
 
-    let topic = if let Some(Commands::Publish { pub_sub_topic }) = options.command {
-        let pubsub = PubSubClient::default().await?;
-        let topic = pubsub.topic(&pub_sub_topic).new_publisher(None);
-        Some(topic)
+    let topic = if let Some(pub_sub_topic) = options.pub_sub_topic {
+        if pub_sub_topic.is_empty() {
+            None
+        } else {
+            println!("Events will be published to {} topic", pub_sub_topic);
+            let pubsub = PubSubClient::default().await?;
+            let topic = pubsub.topic(&pub_sub_topic).new_publisher(None);
+            Some(topic)
+        }
     } else {
         None
     };
+
     println!("Openinig connection to primary...");
     let (pri_client, pri_connection) =
         tokio_postgres::connect(&options.primary_connection_string, NoTls).await?;

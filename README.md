@@ -14,8 +14,7 @@ CREATE TABLE tbl(id INT, value INT);
 INSERT INTO tbl(id, value) VALUES(1, 900);
 ```
 
-Required parameters for the tool are the two connection strings (in the format specificed here: [https://docs.rs/tokio-postgres/latest/tokio_postgres/config/struct.Config.html](https://docs.rs/tokio-postgres/latest/tokio_postgres/config/struct.Config.html)). You can also optionally change the sleep time between tries and the pub/sub topic to write to. If you specify the pub/sub topic you need to specify a service account key file path that has enough privileges to write to the topic.
-
+Required parameters for the tool are the two connection strings (in the format specificed here: [https://docs.rs/tokio-postgres/latest/tokio_postgres/config/struct.Config.html](https://docs.rs/tokio-postgres/latest/tokio_postgres/config/struct.Config.html)). You can also optionally change the sleep time between tries and the pub/sub topic to write to.
 
 For example this command:
 
@@ -26,6 +25,16 @@ pgdelaytest --primary-connection-string "host=primary user=test password=passwor
 Tests the latency between `primary` and `secondary`, publishing the results both to stdout and to the GCP topic `pglatency` for streaming to BigQuery.
 
 Note that, in order to publish to pub/sub, a valid GCP identity must be available and proper permissions must be granted.
+
+## Usage (Docker)
+
+You can either build the container with `docker build . -t pgdelaytest:latest` or pull it from Docker.io. Then execute it passing env variables. For example:
+
+```bash
+docker run -e PRIMARY_CONNECTION_STRING="host=host user=test password=password" -e SECONDARY_CONNECTION_STRING="host=secondary user=test password=password" -e PUB_SUB_TOPIC=topic -e GOOGLE_APPLICATION_CREDENTIALS=/service_account_pvk.json -v /service_account_pvk.json:/service_account_pvk.json pgdelaytest:latest
+```
+
+*Note*: this example uses a service account key file, it is not necessary if you don't want to publish to pub/sub or you have default credentials at hand.
 
 ## Methodology
 

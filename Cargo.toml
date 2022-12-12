@@ -4,12 +4,10 @@ authors = ["Francesco Cogno <francesco.cogno@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 anyhow = "1.0.66"
 chrono = "0.4.22"
-clap = { version = "4.0.22", features = ["derive"] } 
+clap = { version = "4.0.22", features = ["derive", "env"] } 
 csv = "1.1.6"
 goauth = "0.13.1"
 google-cloud-googleapis = { version = "0.6.0", features = ["pubsub"] }
