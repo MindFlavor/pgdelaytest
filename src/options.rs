@@ -1,14 +1,4 @@
-use clap::{Parser, Subcommand};
-
-#[derive(Subcommand, Debug)]
-pub enum Commands {
-    /// publish events to Google Cloud Pub/Sub
-    Publish {
-        /// Pub/sub topic to publish to
-        #[arg(long, env = "PUB_SUB_TOPIC")]
-        pub_sub_topic: String,
-    },
-}
+use clap::Parser;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -26,6 +16,7 @@ pub struct Options {
     #[arg(long, default_value_t = 1000, env = "SLEEP_MS")]
     pub sleep_ms: u64,
 
-    #[command(subcommand)]
-    pub command: Option<Commands>,
+    /// Pub/sub topic to publish to
+    #[arg(long, env = "PUB_SUB_TOPIC")]
+    pub pub_sub_topic: Option<String>,
 }
